@@ -1,0 +1,160 @@
+# Define all 4-fold codons，which Kd less than 130 uM
+codon = [
+    [a, b, c, d, e, f, g, h]
+    for a in ["UCC"]
+    for b in ["CUC"]
+    for c in ["CCC", "CCA", "CCG"]
+    for d in ["CGU", "CGC", "CGA", "CGG"]
+    for e in ["ACC", "ACG"]
+    for f in ["GUC"]
+    for g in ["GCU", "GCC", "GCA", "GCG"]
+    for h in ["GGU", "GGC", "GGA"]
+]
+
+# convert codon to anticodon, with WC and Wobble base pair
+def transform_triplet(triplet):
+    transformed_triplet = ""
+    for letter in triplet:
+        if letter == "U":
+            transformed_triplet = "A" + transformed_triplet
+        elif letter == "A":
+            transformed_triplet = "U" + transformed_triplet
+        elif letter == "G":
+            transformed_triplet = "C" + transformed_triplet
+        elif letter == "C":
+            transformed_triplet = "G" + transformed_triplet
+    return transformed_triplet
+
+def UGtransform_triplet(triplet):
+    transformed_triplet = ""
+    for letter in triplet:
+        if letter == "U":
+            transformed_triplet = "G" + transformed_triplet
+        elif letter == "A":
+            transformed_triplet = "U" + transformed_triplet
+        elif letter == "G":
+            transformed_triplet = "C" + transformed_triplet
+        elif letter == "C":
+            transformed_triplet = "G" + transformed_triplet
+    return transformed_triplet
+
+def GUtransform_triplet(triplet):
+    transformed_triplet = ""
+    for letter in triplet:
+        if letter == "U":
+            transformed_triplet = "A" + transformed_triplet
+        elif letter == "A":
+            transformed_triplet = "U" + transformed_triplet
+        elif letter == "G":
+            transformed_triplet = "U" + transformed_triplet
+        elif letter == "C":
+            transformed_triplet = "G" + transformed_triplet
+    return transformed_triplet
+
+def GUUGtransform_triplet(triplet):
+    transformed_triplet = ""
+    for letter in triplet:
+        if letter == "U":
+            transformed_triplet = "G" + transformed_triplet
+        elif letter == "A":
+            transformed_triplet = "U" + transformed_triplet
+        elif letter == "G":
+            transformed_triplet = "U" + transformed_triplet
+        elif letter == "C":
+            transformed_triplet = "G" + transformed_triplet
+    return transformed_triplet
+
+def UG1transform_triplet(triplet):
+    transformed_triplet = ""
+    u_replaced = False  # 用于标记是否已经替换了一个 U
+    for letter in triplet:  # 颠倒顺序
+        if letter == "U" and not u_replaced:
+            transformed_triplet = "G" + transformed_triplet
+            u_replaced = True
+        elif letter == "U" and u_replaced:
+            transformed_triplet = "A" + transformed_triplet
+        elif letter == "A":
+            transformed_triplet = "U" + transformed_triplet
+        elif letter == "G":
+            transformed_triplet = "C" + transformed_triplet
+        elif letter == "C":
+            transformed_triplet = "G" + transformed_triplet
+    return transformed_triplet
+
+def GU1transform_triplet(triplet):
+    transformed_triplet = ""
+    g_replaced = False  # 用于标记是否已经替换了一个 G
+    for letter in triplet:  # 颠倒顺序
+        if letter == "G" and not g_replaced:
+            transformed_triplet = "U" + transformed_triplet
+            g_replaced = True
+        elif letter == "G" and g_replaced:
+            transformed_triplet = "C" + transformed_triplet
+        elif letter == "A":
+            transformed_triplet = "U" + transformed_triplet
+        elif letter == "U":
+            transformed_triplet = "A" + transformed_triplet
+        elif letter == "C":
+            transformed_triplet = "G" + transformed_triplet
+    return transformed_triplet
+
+anticodon = []
+
+# convert codon to anticodon
+for codon_set in codon:
+    transformed_set = [transform_triplet(triplet) for triplet in codon_set]
+    anticodon.append(transformed_set)
+
+
+new_anticodon = []
+
+# select anticodon sets
+for anticodon_set in anticodon:
+    # mark if should be kept
+    keep_set = True
+    # convert each anticodon to kissed anticodon
+    transformed_triplets = [transform_triplet(triplet) for triplet in anticodon_set]
+    # check if kissed anticodon in the anticodon set
+    for triplet in transformed_triplets:
+        if triplet in anticodon_set:
+            keep_set = False
+            break
+    transformed_triplets = [UGtransform_triplet(triplet) for triplet in anticodon_set]
+    for triplet in transformed_triplets:
+        if triplet in anticodon_set:
+            keep_set = False
+            break
+    transformed_triplets = [GUtransform_triplet(triplet) for triplet in anticodon_set]
+    for triplet in transformed_triplets:
+        if triplet in anticodon_set:
+            keep_set = False
+            break
+    transformed_triplets = [GUUGtransform_triplet(triplet) for triplet in anticodon_set]
+    for triplet in transformed_triplets:
+        if triplet in anticodon_set:
+            keep_set = False
+            break
+    transformed_triplets = [UG1transform_triplet(triplet) for triplet in anticodon_set]
+    for triplet in transformed_triplets:
+        if triplet in anticodon_set:
+            keep_set = False
+            break
+    transformed_triplets = [GU1transform_triplet(triplet) for triplet in anticodon_set]
+    for triplet in transformed_triplets:
+        if triplet in anticodon_set:
+            keep_set = False
+            break
+
+    if keep_set:
+        new_anticodon.append(anticodon_set)
+
+new_codon = []
+
+# convert new anticodon set to new codon set
+for new_anticodon_set in new_anticodon:
+    transformed_set = [transform_triplet(triplet) for triplet in new_anticodon_set]
+    new_codon.append(transformed_set)
+
+# output new codon set
+for i, a in enumerate(new_codon):
+    print(f"new codon set {i + 1}: {a}")
