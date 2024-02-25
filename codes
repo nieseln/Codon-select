@@ -67,8 +67,8 @@ def GUUGtransform_triplet(triplet):
 
 def UG1transform_triplet(triplet):
     transformed_triplet = ""
-    u_replaced = False  
-    for letter in triplet:  
+    u_replaced = False
+    for letter in triplet:
         if letter == "U" and not u_replaced:
             transformed_triplet = "G" + transformed_triplet
             u_replaced = True
@@ -84,8 +84,8 @@ def UG1transform_triplet(triplet):
 
 def GU1transform_triplet(triplet):
     transformed_triplet = ""
-    g_replaced = False  
-    for letter in triplet:  
+    g_replaced = False
+    for letter in triplet:
         if letter == "G" and not g_replaced:
             transformed_triplet = "U" + transformed_triplet
             g_replaced = True
@@ -159,3 +159,95 @@ for new_anticodon_set in new_anticodon:
 # output new codon set
 for i, a in enumerate(new_codon):
     print(f"new codon set {i + 1}: {a}")
+
+
+from itertools import product
+def filter_mrna(i, new_codon):
+    mrna = [''.join(p) for p in product(bases, repeat=i)]
+    # Initialize list A with each sublist in new_codon
+    for index, new_codon_set in enumerate(new_codon):
+        # Filter strings based on conditions
+        mrna_filtered_1 = [s for s in mrna if s[:3] in new_codon_set and s[3:6] in new_codon_set]
+        mrna_filtered_2 = [s for s in mrna_filtered_1 if s[1:4] not in new_codon_set and s[2:5] not in new_codon_set]
+        # Print the remaining count
+        print(f"i={i}, for new set {index+1}, mRNA {len(mrna_filtered_2)}")
+filter_mrna(6, new_codon)
+
+def filter_mrna7(new_codon):
+    mrna = [''.join(p) for p in product(bases, repeat=7)]
+    # Initialize list A with each sublist in new_codon
+    for index, new_codon_set in enumerate(new_codon):
+        # Filter strings based on conditions
+        mrna_filtered_1 = [s for s in mrna if s[:3] in new_codon_set and s[3:6] in new_codon_set]
+        mrna_filtered_2 = [s for s in mrna_filtered_1 if s[1:4] not in new_codon_set and s[2:5] not in new_codon_set and s[4:] not in new_codon_set]
+        mrna_filtered_3 = [s for s in mrna if s[1:4] in new_codon_set and s[4:] in new_codon_set]
+        mrna_filtered_4 = [s for s in mrna_filtered_3 if s[:3] not in new_codon_set and s[2:5] not in new_codon_set and s[3:6] not in new_codon_set]
+        # Print the remaining count
+        mrna_filtered = mrna_filtered_2 + mrna_filtered_4
+        print(f"i=7, for new set {index+1}, mRNA {len(mrna_filtered)}")
+filter_mrna7(new_codon)
+
+def filter_mrna8(new_codon):
+    mrna = [''.join(p) for p in product(bases, repeat=8)]
+    # Initialize list A with each sublist in new_codon
+    for index, new_codon_set in enumerate(new_codon):
+            mrna_filtered_1 = [s for s in mrna if s[0:3] in new_codon_set and s[3:6] in new_codon_set]
+            mrna_filtered_2 = [s for s in mrna_filtered_1 if s[1:4] not in new_codon_set and s[2:5] not in new_codon_set and s[4:7] not in new_codon_set and s[5:8] not in new_codon_set]
+            mrna_filtered_3 = [s for s in mrna if s[1:4] in new_codon_set and s[4:7] in new_codon_set]
+            mrna_filtered_4 = [s for s in mrna_filtered_3 if s[0:3] not in new_codon_set and s[2:5] not in new_codon_set and s[3:6] not in new_codon_set and s[5:8] not in new_codon_set]
+            mrna_filtered_5 = [s for s in mrna if s[2:5] in new_codon_set and s[5:8] in new_codon_set]
+            mrna_filtered_6 = [s for s in mrna_filtered_5 if s[0:3] not in new_codon_set and s[1:4] not in new_codon_set and s[3:6] not in new_codon_set and s[4:7] not in new_codon_set]
+            mrna_filtered = mrna_filtered_2 + mrna_filtered_4 + mrna_filtered_6
+            print(f"i=8, for new set {index + 1}, mRNA {len(mrna_filtered)}")
+filter_mrna8(new_codon)
+
+def filter_mrna9(new_codon):
+    mrna = [''.join(p) for p in product(bases, repeat=9)]
+    # Initialize list A with each sublist in new_codon
+    for index, new_codon_set in enumerate(new_codon):
+        # Filter strings based on conditions
+        mrna_filtered_1 = [s for s in mrna if s[0:3] in new_codon_set and s[3:6] in new_codon_set and s[6:9] in new_codon_set]
+        mrna_filtered_2 = [s for s in mrna_filtered_1 if s[1:4] not in new_codon_set and s[2:5] not in new_codon_set and s[4:7] not in new_codon_set and s[5:8] not in new_codon_set]
+        # Print the remaining count
+        print(f"i=9, for new set {index+1}, mRNA {len(mrna_filtered_2)}")
+filter_mrna9(new_codon)
+
+def filter_mrna10(new_codon):
+    mrna = [''.join(p) for p in product(bases, repeat=10)]
+    # Initialize list A with each sublist in new_codon
+    for index, new_codon_set in enumerate(new_codon):
+        # Filter strings based on conditions
+        mrna_filtered_1 = [s for s in mrna if
+                           s[0:3] in new_codon_set and s[3:6] in new_codon_set and s[6:9] in new_codon_set]
+        mrna_filtered_2 = [s for s in mrna_filtered_1 if
+                           s[1:4] not in new_codon_set and s[2:5] not in new_codon_set and s[4:7] not in new_codon_set and s[5:8] not in new_codon_set and s[7:10] not in new_codon_set]        # Print the remaining count
+        mrna_filtered_3 = [s for s in mrna if
+                           s[1:4] in new_codon_set and s[4:7] in new_codon_set and s[7:10] in new_codon_set]
+        mrna_filtered_4 = [s for s in mrna_filtered_3 if
+                           s[0:3] not in new_codon_set and s[2:5] not in new_codon_set and s[3:6] not in new_codon_set and s[5:8] not in new_codon_set and s[6:9] not in new_codon_set]        # Print the remaining count
+
+        mrna_filtered = mrna_filtered_2 + mrna_filtered_4
+        print(f"i=10, for new set {index+1}, mRNA {len(mrna_filtered)}")
+filter_mrna10(new_codon)
+
+def filter_mrna11(new_codon):
+    mrna = [''.join(p) for p in product(bases, repeat=11)]
+    # Initialize list A with each sublist in new_codon
+    for index, new_codon_set in enumerate(new_codon):
+        # Filter strings based on conditions
+        mrna_filtered_1 = [s for s in mrna if
+                           s[0:3] in new_codon_set and s[3:6] in new_codon_set and s[6:9] in new_codon_set]
+        mrna_filtered_2 = [s for s in mrna_filtered_1 if
+                           s[1:4] not in new_codon_set and s[2:5] not in new_codon_set and s[4:7] not in new_codon_set and s[5:8] not in new_codon_set and s[7:10] not in new_codon_set and s[8:11] not in new_codon_set]        # Print the remaining count
+        mrna_filtered_3 = [s for s in mrna if
+                           s[1:4] in new_codon_set and s[4:7] in new_codon_set and s[7:10] in new_codon_set]
+        mrna_filtered_4 = [s for s in mrna_filtered_3 if
+                           s[0:3] not in new_codon_set and s[2:5] not in new_codon_set and s[3:6] not in new_codon_set and s[5:8] not in new_codon_set and s[6:9] not in new_codon_set and s[8:11] not in new_codon_set]        # Print the remaining count
+        mrna_filtered_5 = [s for s in mrna if
+                           s[2:5] in new_codon_set and s[5:8] in new_codon_set and s[8:11] in new_codon_set]
+        mrna_filtered_6 = [s for s in mrna_filtered_5 if
+                           s[0:3] not in new_codon_set and s[1:4] not in new_codon_set and s[3:6] not in new_codon_set and s[4:7] not in new_codon_set and s[6:9] not in new_codon_set and s[7:10] not in new_codon_set]        # Print the remaining count
+
+        mrna_filtered = mrna_filtered_2 + mrna_filtered_4 + mrna_filtered_6
+        print(f"i=11, for new set {index+1}, mRNA {len(mrna_filtered)}")
+filter_mrna11(new_codon)
