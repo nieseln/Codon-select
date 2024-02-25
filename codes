@@ -1,5 +1,5 @@
 # Define all 4-fold codons， which Kd less than 130 uM
-bases = [U, C, A, G]
+bases = ['U', 'C', 'A', 'G']
 codon = [
     [Ser, Leu, Pro, Arg, Thr, Val, Ala, Gly]
     for Ser in ["UCC"]
@@ -8,7 +8,7 @@ codon = [
     for Arg in [f"CG{n}" for n in bases]
     for Thr in ["ACC", "ACG"]
     for Val in ["GUC"]
-    for Ala in [f"GC{n}" for n in base]
+    for Ala in [f"GC{n}" for n in bases]
     for Gly in ["GGU", "GGC", "GGA"]
 ]
 
