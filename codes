@@ -66,8 +66,8 @@ def GUUGtransform_triplet(triplet):
 
 def UG1transform_triplet(triplet):
     transformed_triplet = ""
-    u_replaced = False  # 用于标记是否已经替换了一个 U
-    for letter in triplet:  # 颠倒顺序
+    u_replaced = False  
+    for letter in triplet:  
         if letter == "U" and not u_replaced:
             transformed_triplet = "G" + transformed_triplet
             u_replaced = True
@@ -83,8 +83,8 @@ def UG1transform_triplet(triplet):
 
 def GU1transform_triplet(triplet):
     transformed_triplet = ""
-    g_replaced = False  # 用于标记是否已经替换了一个 G
-    for letter in triplet:  # 颠倒顺序
+    g_replaced = False  
+    for letter in triplet:  
         if letter == "G" and not g_replaced:
             transformed_triplet = "U" + transformed_triplet
             g_replaced = True
