@@ -7,16 +7,16 @@ import random
 
 bases = ['A', 'C', 'G', 'U']
 
-# 生成4行5列的表格
+# generate a 4*5 table
 mRNA = []
 for _ in range(4):
     row = [random.choice(bases) for _ in range(5)]
-    # 把前五列，两两相连
+    # connect neighbour bases
     for i in range(4):
         row.append(row[i] + row[i+1]) 
     mRNA.append(row)
 
-# 打印表格
+# Print the mRNA with KD
 for row in mRNA:
     print('5\'-', ' '.join(row[:5]))
 
