@@ -129,25 +129,22 @@ def manipulate_dataframe(datafunc):
 # print(data.head())
 
 data = manipulate_dataframe(codon)
-rna_sequences = data.iloc[:, :5]  # RNA序列特征
-targets = data.iloc[:, 25:26]        # 目标（x，y）值
+rna_sequences = data.iloc[:, :5] 
+targets = data.iloc[:, 25:26]       
 # print(targets)
 
-# 进行特征编码（独热编码）
+
 encoder = OneHotEncoder()
 rna_sequences_encoded = encoder.fit_transform(rna_sequences)
-# X_train, X_test, y_train, y_test = train_test_split(rna_sequences_encoded, targets, test_size=0.2, random_state=42)
+
 
 additional_dataG = data.iloc[:, 5:9]
 additional_dataH = data.iloc[:, 9:13]
 additional_dataS = data.iloc[:, 13:17]
 additional_dataSt = data.iloc[:, 17:21]
 additional_dataWC = data.iloc[:, 21:25]
-# X_train_concatenated1 = hstack([rna_sequences_encoded, additional_dataWC])
-# X_train_concatenated2 = hstack([rna_sequences_encoded, additional_dataG, additional_dataWC])
-X_train_concatenated3= hstack([rna_sequences_encoded, additional_dataWC])
-X_train, X_test, y_train, y_test = train_test_split(X_train_concatenated3, targets, test_size=0.20, random_state=42)
-
+X_train_concatenated= hstack([rna_sequences_encoded, additional_dataWC])
+X_train, X_test, y_train, y_test = train_test_split(X_train_concatenated, targets, test_size=0.20, random_state=42)
 
 y_train = y_train.values.ravel()
 y_test = y_test.values.ravel()
@@ -180,32 +177,29 @@ gb_regressor.fit(X_train, y_train)
 y_pred = gb_regressor.predict(X_test)
 
 
-
-# 计算模型的评估指标
+# Evalution of the model
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-# mse = mean_squared_error(y_test, y_pred)
-# mae = mean_absolute_error(y_test, y_pred)
+mse = mean_squared_error(y_test, y_pred)
+mae = mean_absolute_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
 
-# print("Mean Squared Error:", mse)
-# print("Mean Absolute Error:", mae)
+print("Mean Squared Error:", mse)
+print("Mean Absolute Error:", mae)
 print("R^2 Score:", r2)
+
 
 # intercept = model.intercept_
 # coefficients = model.coef_
 #
-# print("Intercept (截距):", intercept)
-# print("Coefficients (系数):", coefficients)
+# print("Intercept:", intercept)
+# print("Coefficients:", coefficients)
 
 
 import itertools
-
 bases = ['A', 'C', 'G', 'U']
 all_sequences = list(itertools.product(bases, repeat=5))
 mRNA = [list(seq) for seq in all_sequences]
-
 mRNA_df = pd.DataFrame(mRNA, columns=['Column1', 'Column2', 'Column3', 'Column4', 'Column5'])
-
 
 # import random
 # bases = ['A', 'C', 'G', 'U']
@@ -216,7 +210,6 @@ mRNA_df = pd.DataFrame(mRNA, columns=['Column1', 'Column2', 'Column3', 'Column4'
 #     for i in range(4):
 #         row.append(row[i] + row[i+1])
 #     mRNA.append(row)
-
 
 extra = manipulate_dataframe(mRNA_df)
 
@@ -248,22 +241,15 @@ def transform_y(y_values):
     return transformed_y
 
 y_extra_trans = transform_y(y_extra)
-#
-# # Print the mRNA with KD
-# for row, pred in zip(mRNA, y_extra_trans):
-#     print('5\'-', ' '.join(row[:5]), pred)
 
 import csv
 
 output_file = 'extra_codon.csv'
 
-# 打开CSV文件进行写操作
 with open(output_file, mode='w', newline='') as file:
     writer = csv.writer(file)
-    # 写入标题行
     writer.writerow(['RNA Sequence', 'Prediction KD'])
 
-    # 将结果写入CSV文件
-    for row, pred in zip(mRNA, y_extra_trans):
+      for row, pred in zip(mRNA, y_extra_trans):
         sequence = '5\'-' + ' '.join(row[:5])
         writer.writerow([sequence, pred])
